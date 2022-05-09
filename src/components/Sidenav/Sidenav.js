@@ -2,30 +2,35 @@ import React from "react";
 import collection from "../../img/collection.png";
 import History from "../../img/history.png";
 import "../Sidenav/Sidenav.css";
+import App from "../../App";
 
-const Sidenav = (
+const Sidenav = ({
   history,
-  // setHeaders,
-  // setMethod,
-  // setUrl,
-  // setBody
-) => {
+  headerValue,
+  MethodValue,
+  setUrl,
+  bodyValue,
+  response,
+  responseValue,
+}) => {
 
-  // const clickHistoryItemHandler = (e) => {
-  //   const itemId = e.currentTarget.Math.random();
-  //   console.log(itemId);
-  //   const requestItemConfig = history.find((item) => item.id === itemId);
-  //   console.log(requestItemConfig);
+  const clickHistoryItemHandler = (e) => {
+    const itemId = e.currentTarget.id;
+    const requestItemConfig = history.find((item) => item.id === itemId);
+    console.log(requestItemConfig);
 
-  //   // set the data that exist in request item configuartion
-  //   setMethod(requestItemConfig.method);
-  //   setHeaders(requestItemConfig.headers);
-  //   setUrl(requestItemConfig.url);
-  //   setBody(requestItemConfig.body);
-  // };
+    // set the data that exist in request item configuartion
+    MethodValue(requestItemConfig.method);
+    headerValue(requestItemConfig.headers);
+    setUrl(requestItemConfig.url);
+    bodyValue(requestItemConfig.body);
+    // response(requestItemConfig.responseData);
+    // responseValue(requestItemConfig.setresponseData);
+    console.log(requestItemConfig.response);
+    
+  };
   return (
     <div className="sideNav-container">
-      <div className="sideNav">
         <div className="sideNav-content">
           <div className="left-sidebar-wrapper">
             <div className="left-sidebar-header">
@@ -163,10 +168,10 @@ const Sidenav = (
                 </div>
               </div>
               <div className="left-sidebar-cotainer__right">
-                <div className="left-sidebar-container-tab-content-wrapper">
+                {/* <div className="left-sidebar-container-tab-content-wrapper"> */}
                   <div className="history-sidebar">
                     <div className="history-sidebar-wrapper">
-                      <div className="history-sidebar-menu">
+                      {/* <div className="history-sidebar-menu">
                         <div className="history-sidebar__action-container">
                           <div className="input-search-group">
                             <div className="input-search-group__wrapper"></div>
@@ -182,26 +187,27 @@ const Sidenav = (
                           </div>
                         </div>
                         
-                      </div>
+                      </div> */}
                       <div>
                       <ul className="list-group">
                               {/* <li className="list-group-item d-flex justify-content-center align-items-center pe-2 border-1 border-warning">
                                 <h3 className="text-warning">History Table</h3>
                               </li> */}
-                              {!history.history.length ? (
+                              {!history.length ? (
                                 <div className="text-center">
                                   No history items available
                                 </div>
                               ) : (
-                                history.history.map((requestItem) => (
+                                history.map((requestItem) => (
                                   <li
                                     key={requestItem.id}
                                     id={requestItem.id}
-                                    className="list-group-item d-flex btn justify-content-between align-items-center pe-2 border-1 border-top-0"
-                                    // onClick={clickHistoryItemHandler}
+                                    className="list-group-item d-flex btn justify-content-evenly align-items-center pe-2 "
+                                    style={{border:"none !important"}}
+                                    onClick={clickHistoryItemHandler}
                                   >
                                     {requestItem.url}
-                                    <span className="badge bg-primary rounded-pill">
+                                    <span className="home-icon-get">
                                       {requestItem.method}
                                     </span>
                                   </li>
@@ -211,12 +217,12 @@ const Sidenav = (
                             </div>
                     </div>
                   </div>
-                </div>
+ 
               </div>
             </div>
           </div>
         </div>
-      </div>
+     
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./homePage.css";
-
 import view from "../../img/view.png";
 import dots from "../../img/dots.svg";
 import plus from "../../img/plus.png";
@@ -23,11 +22,12 @@ const HomePage = ({
   history,
   clearResponseTable,
   responseData,
+  setResponseData,
   responseStatus,
 }) => {
   console.log(tabIndex);
   const [statusClassName, setStatusClassName] = useState(
-    "nav-item border rounded border-2 border-success"
+    "nav-item warning success error"
   );
   const [environment] = useState(["No environment"]);
   const [text] = useState(["Text", "JSON", "XML", "HTML"]);
@@ -42,27 +42,27 @@ const HomePage = ({
 
   useEffect(() => {
     if (responseStatus >= 400) {
-      setStatusClassName("nav-item border rounded border-2 border-danger");
+      setStatusClassName("nav-item nav-item-error");
     } else if (responseStatus >= 300) {
-      setStatusClassName("nav-item border rounded border-2 border-warning");
+      setStatusClassName("nav-item warning");
     } else {
-      setStatusClassName("nav-item border rounded border-2 border-success");
+      setStatusClassName("nav-item success");
     }
   }, [responseStatus]);
 
+
   return (
-    <div className="homePage-group verticle">
-      <div className="homePage-container">
-        <div className="homePage">
-          <div className="homepage-content">
+   
             <div className="sideNav-group horizontal">
               <Sidenav
                 history={history}
-                setMethod={setMethod}
-                setHeaders={setHeaders}
+                MethodValue={setMethod}
+                headerValue={setHeaders}
                 setUrl={setUrl}
-                setBody={setBody}
+                bodyValue={setBody}
                 clearResponseTable={clearResponseTable}
+                response={responseData}
+                responseValue={setResponseData}
               />
 
               <div className="homePage-container">
@@ -121,8 +121,8 @@ const HomePage = ({
                         <div className="enviroment-handler"></div>
                       </div>
                       <div className="environment-container">
-                        <div className="environment-selector-container">
-                          <div className="environment-selector-wrapper">
+                        
+                          
                             <div className="input-select-wrapper">
                               <div className="input-search-group">
                                 <div className="input-search-group__input-wrapper">
@@ -142,11 +142,10 @@ const HomePage = ({
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        </div>
+                         
+                      
                         <div className="environment-view">
-                          <div className="dropdown">
-                            <div className="dropdown-button">
+                          
                               <div className="btn btn-icon">
                                 <img
                                   src={view}
@@ -158,14 +157,12 @@ const HomePage = ({
                                   }}
                                 />
                               </div>
-                            </div>
-                          </div>
+                            
                         </div>
                       </div>
                     </div>
                     <div className="homePage-content">
                       <div className="sideNav-group horizontal">
-                        <div className="homePage-container">
                           <div className="homePage">
                             <div className="main-container">
                               <div className="tab-header">
@@ -215,24 +212,19 @@ const HomePage = ({
                                         </div>
                                       </div>
                                     </div>
-                                    <div className="url-group">
-                                      <div className="url-main">
-                                        <div className="url-editor-root">
-                                          <div className="url-editor__placeholder">
-                                            <input
+                                    <div className="request_input" style={{width:"100%" , height:"100%" , border:"1px solid #f2f2f2"}}>
+                                    <input
                                               type="text"
-                                              className="form-control btn-secondary "
-                                              placeholder="url"
+                                              className="form-control btn-secondary url-editor-root "
+                                              placeholder="Enter Request URL"
                                               aria-label="url"
                                               aria-describedby="basic-addon1"
                                               value={url}
+                                              style={{ border: 'none' }}
                                               onChange={(e) =>
                                                 setUrl(e.target.value)
                                               }
                                             />
-                                          </div>
-                                        </div>
-                                      </div>
                                     </div>
                                   </div>
                                   <div className="url-container-button__group">
@@ -294,11 +286,11 @@ const HomePage = ({
                                                   >
                                                     <textarea
                                                       name="body"
-                                                      className="bg-light request-area border border-1 rounded p-3 json-pretty json-pretty-container"
+                                                      className=" request-area border   p-3 json-pretty json-pretty-container"
                                                       id="body"
                                                       spellCheck="false"
                                                       value={body}
-                                                      cols="70"
+                                                      cols="141"
                                                       rows="10"
                                                       onChange={e =>
                                                         setBody(e.target.value)
@@ -550,15 +542,23 @@ const HomePage = ({
                                           aria-labelledby="pills-data-tab"
                                         >
                                           <div
-                                            className="data-content bg-light border border-1 rounded p-3"
+                                            className="data-content border border-1 p-3 json-pretty json-pretty-container"
                                             style={{
-                                              width: "523px",
+                                              width: "95%",
                                               height: "246px",
+                                              overflow: "scroll",
+                                              margin: "0 auto",
+                                              overflowX:"hidden",
+                                              textAlign: "initial",
+                                              display: "flex",
+                                              flex:"1 1 0%",
+                                              flexDirection: "column",
+                                              justifyContent: "flex-start",
+                                              fontFamily: " IBMPlexMono Courier New  monospace",
                                             }}
                                           >
                                             <JSONPretty
-                                              data={responseData}
-                                              mainStyle="background:#f8f9fa"
+                                              style={{fontSize: "1.1em"}} data={responseData} mainStyle="padding:1em  overflow:hidden  background:#fafafa " valueStyle="color:#0451a5"
                                             />
                                           </div>
                                         </div>
@@ -569,17 +569,14 @@ const HomePage = ({
                               </div>
                             </div>
                           </div>
-                        </div>
+                        
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
+         
   );
 };
 

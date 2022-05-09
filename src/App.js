@@ -5,7 +5,11 @@ import { toast } from "react-toastify";
 import axios from "axios"
 import "normalize.css/normalize.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'react-json-pretty/themes/monikai.css';
+
 function App() {
+  // toast.configure();
+
   const [url, setUrl] = useState("");
   const [method, setMethod] = useState("");
   const [body, setBody] = useState("");
@@ -53,22 +57,20 @@ function App() {
       const id = Math.random();
       setHistory([
         ...history,
-        { id: id.toString(), url, method, headers, body },
+        { id: id.toString(), url, method, headers, body ,setResponseData,responseData },
       ]);
       console.log(body)
-      const res = await axios.post("http://localhost:2410/get",{url,method,body,headers})
+      const res = await axios.post("https://postman-node.herokuapp.com/get",{url,method,body,headers})
       const data = res.data;
       console.log(res)
 
       if (data) setResponseData(JSON.stringify(data));
       if (document.cookie) setResponseCookie(document.cookie);
       setResponseStatus(res.status);
-      console.log(res.status)
 
       toast.success(`🧪 successfully returned response status:${res.status}`);
 
     } catch (error) {
-      console.log(error); 
       if (error.message.includes("Failed to parse URL"))
         toast.error("⚠️ wrong URL,enter correct URL");
       if (error.message.includes("Unexpected token < in JSON at position 0"))
@@ -77,12 +79,14 @@ function App() {
         toast.error("⚠️ wrong headers sets, enter correct headers");
     }
   };
+
   return (
     <div className="App">
       <HomePage url={url}
                 setUrl={setUrl}
                 method={method}
                 setMethod={setMethod}
+                setResponseData={setResponseData}
                 setHeaders={setHeaders}
                 responseData={responseData}
                 responseCookie={responseCookie}
