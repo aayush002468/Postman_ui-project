@@ -1,7 +1,6 @@
 import express, { json } from "express"
 import fetch from "node-fetch";
-import AllRoutes from "./Routes/index.js";
-// const AllRoutes = require('./Routes');
+
 
 
 let port = process.env.PORT || 2410;
@@ -17,11 +16,7 @@ app.use((req, res, next) => {
   
   });
 app.use(cors({origin: '*','Access-Control-Allow-Origin': '*'}));
-// app.use(express.urlencoded({
-//     extended:true
-// }))
-// let x = {n:"l",p:"l",d:"l",h:"l",b:"l"}
-// x.n
+
 
 
 app.post('/get',async (req,res)=>{
