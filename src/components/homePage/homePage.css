@@ -13,12 +13,7 @@
     display: flex;
     flex-direction: column;
 }
-.homePage{
-    /* flex-direction: column;
-    flex: 1 auto;
-    position: relative;
-    height:1198px */
-}
+
 .homePage, .homepage-content{
     display: flex;
     width: 85rem;
@@ -59,27 +54,13 @@
 .header-tab{
     width: 19rem !important;
 }
-/* .homePage-tabs::before{
-    content: "";
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    left: 0;
-    pointer-events: none;
-} */
+
 .homePage-tabs:first-child.is-active{
     border-left: 0;
     box-shadow: inset -1px 0 0 #EDEDED;
 }
 
-/* .homePage-tabs.is-active{
-    height: 40px;
-    border-right: 1px solid;
-    border-image-source: linear-gradient(180deg,#EDEDED 0,#EDEDED);
-    background-color: #FFFFFF;
-    color: #212121;
 
-} */
 .homePage-tabs .tab-primary.is-active{
     border-bottom: 3px solid #f76a3f;
     color: #000;
@@ -166,17 +147,17 @@
     justify-content: center;
     align-items: center;
 }
-.environment-selector-container{
+/* .environment-selector-container{
     display: flex;
     flex-direction: row;
     margin-right: 10px;
-}
+} */
 .environment-view{
     margin-right: 8px
 }
-.environment-selector-wrapper{
+/* .environment-selector-wrapper{
     width: 100%;
-}
+} */
 .input-select-wrapper{
     background-color: initial;
     border: none;
@@ -321,18 +302,12 @@
     border: solid #e6e6e6;
     border-left-width: 1px;
     border-bottom-width: 1px;
-    border-right-width: 0;
+    border-right-width: 2px;
     border-top-width: 1px;
     align-items: center;
     display: flex;
 }
-.url-group{
-    flex: 1;
-    min-width: 0;
-    color: #212121;
-    background-color: #f2f2f2;
-    border-radius: 0 4px 4px 0;
-}
+
 
 .dropdown-button{
     align-self: center;
@@ -346,10 +321,10 @@
 }
 .url-group{
     flex: 1;
-    min-width: 0;
-    color: #212121;
-    background-color: #f2f2f2;
     border-radius: 0 4px 4px 0;
+    border: 1px solid #f2f2f2;
+    color: #212121;
+    background-color: white;
 }
 .url-main{
     position: relative;
@@ -393,6 +368,7 @@
     background-color: #097bed !important;
     color: white !important;
     border-color: #097bed !important;
+    font-weight: 600 !important;
     width: 81px;
     box-sizing: border-box;
     font-size: 14px;
@@ -687,6 +663,7 @@
     display: flex;
     flex-direction: column;
     min-width: 0;
+    padding-top: 1rem;
     height: 100%;
 }
 .text-editor{
@@ -745,3 +722,12 @@
 .request-area{
     max-height: 8.5rem;
 }
+.request_input input{
+    background-color: white !important;
+    border-radius: none !important;
+}
+.form-control:focus {
+    border-color: inherit !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+  }
