@@ -1,14 +1,12 @@
 import './App.css';
 import HomePage from './components/homePage/homePage';
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import axios from "axios"
 import "normalize.css/normalize.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import 'react-json-pretty/themes/monikai.css';
+
 
 function App() {
-  // toast.configure();
 
   const [url, setUrl] = useState("");
   const [method, setMethod] = useState("");
@@ -19,40 +17,35 @@ function App() {
   const [responseHeaders, setResponseHeaders] = useState({});
   const [responseCookie, setResponseCookie] = useState("");
   const [responseStatus, setResponseStatus] = useState("null");
-
-  const [requestTabs] = useState([
-    "Params",
-    "Authorization",
-    "Headers",
-    "Body",
-    "Pre-request Script",
-    "Tests",
-    "Settings",
-  ]);
-
+  const [requestTabs] = useState([ "Params","Authorization", "Headers","Body", "Tests", "Settings"]);
+  const [responseTabs] = useState([ "Body","Cookies", "Headers","Test Result"]);
   const [requestsTabIndex, setRequestsTabIndex] = useState(0);
-
+  const [responseTabIndex, setResponseTabIndex] = useState(0);
 
 
   const handleRequestTabChange = (index) => {
     setRequestsTabIndex(index);
   };
 
+  const handleResponseTabChange = (index)=>{
+    setResponseTabIndex(index)
+  }
+
   useEffect(() => {
     setMethod("GET");
     setUrl("");
-    setHeaders(
-      `{\n"Access-Control-Allow-Origin":"*",\n"Content-Type":"application/json"\n,\n"Access-Control-Allow-Credentials":"true"\n,\n"Access-Control-Allow-Methods":"GET,POST,PUT,DELETE,OPTIONS"\n,\n"Access-Control-Allow-Headers":"Content-Type, Authorization, X-Requested-With"\n}`
-    );
+    setHeaders( "" );
     setBody("{\n\n}");
   }, []);
-  const clearResponseTable = () => {
-    setResponseData("");
-    setResponseHeaders({});
-    setResponseCookie("");
-  };
+
+  // const clearResponseTable = () => {
+  //   setResponseData("");
+  //   setResponseHeaders({});
+  //   setResponseCookie("");
+  // };
 
   const sendHandler = async () => {
+   
     try {
       const id = Math.random();
       setHistory([
@@ -60,23 +53,27 @@ function App() {
         { id: id.toString(), url, method, headers, body ,setResponseData,responseData },
       ]);
       console.log(body)
-      const res = await axios.post("https://postman-node.herokuapp.com/get",{url,method,body,headers})
+      const res = await axios.post("http://localhost:2410/get",{url,method,body,headers});
       const data = res.data;
-      console.log(res)
+      console.log(data)
+      if (method === "GET"){
+        if (data) setResponseData(JSON.stringify(data.data));
+      }
+      else if (method === "POST" && data) setResponseData(data.data.body);
 
-      if (data) setResponseData(JSON.stringify(data));
       if (document.cookie) setResponseCookie(document.cookie);
-      setResponseStatus(res.status);
-
-      toast.success(`🧪 successfully returned response status:${res.status}`);
-
-    } catch (error) {
-      if (error.message.includes("Failed to parse URL"))
-        toast.error("⚠️ wrong URL,enter correct URL");
-      if (error.message.includes("Unexpected token < in JSON at position 0"))
-        toast.error("⚠️ wrong body request data, enter correct body");
-      if (error.message.includes("Unexpected string in JSON"))
-        toast.error("⚠️ wrong headers sets, enter correct headers");
+      setResponseStatus(data.status);
+      setResponseHeaders(data.headers);
+      setHeaders(data.headers)
+    } 
+    catch (error) {
+      console.log(error)
+      if(error.response.status === 404){
+      setResponseStatus(error.response.status)
+      }
+      else {
+        setResponseStatus(error.response.code)
+      }
     }
   };
 
@@ -97,13 +94,13 @@ function App() {
                 headers={headers}
                 sendHandler={sendHandler}
                 history={history}
-                clearResponseTable={clearResponseTable}
                 tabs={requestTabs}
+                responseTabs={responseTabs}
                 tabIndex={requestsTabIndex}
+                responseTabIndex={responseTabIndex}
                 handleTabChange={(index) => handleRequestTabChange(index)}
+                handleResponseTab={(index) => handleResponseTabChange(index)}
                 />  
-                
-                     
     </div>
   );
 }
